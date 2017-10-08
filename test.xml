@@ -1,0 +1,18 @@
+<DistanceMatrixResponse>
+	<status>OK</status>
+	<origin_address>Washington, DC, USA</origin_address>
+	<destination_address>New York, NY, USA</destination_address>
+	<row>
+		<element>
+			<status>OK</status>
+			<duration>
+				<value>13755</value>
+				<text>3 hours 49 mins</text>
+			</duration>
+			<distance>
+				<value>361587</value>
+				<text>225 mi</text>
+			</distance>
+		</element>
+	</row>
+</DistanceMatrixResponse>
