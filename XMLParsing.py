@@ -16,8 +16,16 @@ def XML(url):
 		hours = tree[3][0][1][1].text
 		miles = tree[3][0][2][1].text
 
-		num = re.findall('\d+\.\d+', miles)
-		miles = float(num[0])
-		print(miles)
+		str1, str2 = miles.split()
+		if "," in str1:  
+			temp1, temp2 = str1.split(",")
+			trans = temp1 + temp2
+			miles = float(trans)	
+			#return hours, trans
+		else:
+			miles = float(str1)
 
-		return hours, miles
+		#print(str1)
+		#print(miles)
+	
+	return hours, miles
