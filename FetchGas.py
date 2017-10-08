@@ -30,7 +30,8 @@ def gasParse():
 	# Traverse thru the set created by table and prints the text within the tags, which is just the 
 	# average gas price
 	for tag in table:
-		print(tag.text.strip())
+		gas = tag.text.strip()
+	return gas
 
 if __name__ == '__main__':
 	main()
