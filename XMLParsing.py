@@ -13,6 +13,7 @@ def XML(url):
 	miles = tree[3][0][2][1].text
 
 	num = re.findall('\d+\.\d+', miles)
-	print(float(num[0]))
+	miles = float(num[0])
+	print(miles)
 
 	return hours, miles
