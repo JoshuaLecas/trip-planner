@@ -1,8 +1,10 @@
 import xml.etree.ElementTree as ET 
 import requests
 
+startcity = input("Enter the origin city ")
+endcity = input("Enter the end city ")
 # Use a request on the url. TODO: Find a way to change the url to use specific cities
-response = requests.get('https://maps.googleapis.com/maps/api/distancematrix/xml?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=AIzaSyC4OD6a1GsGulGx7l7ycw7X-p60x63dcZY')
+response = requests.get('https://maps.googleapis.com/maps/api/distancematrix/xml?units=imperial&origins='+startcity+'&destinations='+endcity)
 # Save the XML to an ET
 tree = ET.fromstring(response.content)
 # Navigate through the tree using indices
