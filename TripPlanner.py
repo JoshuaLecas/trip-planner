@@ -19,7 +19,7 @@ def constructURL():
 
 	gmapsUrl = 'https://maps.googleapis.com/maps/api/distancematrix/xml?'
 	
-	originLocation = print('Enter name of Origin City': )
+	originLocation = print('Enter name of Origin City: ' )
 	destLocation = print('Enter name of Destination City:' )
 	
 	mydict = {'units' : 'imperial', 'origins' : originLocation, 'destinations' : destLocation}
