@@ -1,8 +1,7 @@
 # parse gas data
 
-from urllib.parse import urlencode
+import urllib
 import requests
-from configparser import ConfigParser
 import webbrowser
 
 import XMLParsing as parseXML
@@ -20,24 +19,24 @@ def constructURL():
 
 	gmapsUrl = 'https://maps.googleapis.com/maps/api/distancematrix/xml?'
 	
-	originLocation = input('Enter name of Origin City:' )
-	destLocation = input('Enter name of Destination City:' )
+	originLocation = raw_input('Enter name of Origin City: ' )
+	destLocation = raw_input('Enter name of Destination City: ' )
 	
 	mydict = {'units' : 'imperial', 'origins' : originLocation, 'destinations' : destLocation}
-	url = gmapsUrl + urlencode(mydict)
+	url = gmapsUrl + urllib.urlencode(mydict)
 	hours, miles = parseXML.XML(url)
 	if hours is None or miles is None:
-		print("Unable to find a route.")
+		print "Unable to find a route."
 		return
 	#r = requests.get(url)
 	
 	#print(r)
 	#print(url)
-	print(hours, miles)
+	print hours, miles
 	gasAvg = fectchinGas.gasParse()
 	#print(gasAvg) 
 	price = gasAvg * miles
-	print("%.2f"%price)
+	print "%.2f" % price
 
 if __name__ == '__main__':
 		main()
