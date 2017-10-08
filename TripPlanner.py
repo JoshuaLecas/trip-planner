@@ -6,6 +6,7 @@ from configparser import ConfigParser
 import webbrowser
 
 import XMLParsing as parseXML
+import FetchGas as fectchinGas
 
 def main():
 	constructURL()
@@ -33,6 +34,10 @@ def constructURL():
 	#print(r)
 	#print(url)
 	print(hours, miles)
+	gasAvg = fectchinGas.gasParse()
+	#print(gasAvg) 
+	price = gasAvg * miles
+	print("%.2f"%price)
 
 if __name__ == '__main__':
 		main()
