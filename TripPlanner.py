@@ -1,5 +1,3 @@
-# parse gas data
-
 from urllib.parse import urlencode
 import requests
 import webbrowser
@@ -16,19 +14,27 @@ ask = Ask(app, '/')
 
 inputList = []
 
+# launch message
+# global list is reset in case of persistence between sessions
 @ask.launch
 def launch():
 	inputList.clear()
 	return question("<speak> <s> Welcome to US Road Trip Planner.</s> <s>Please say your starting city</s> </speak>")
 
+# handles user input for the city they are departing from
+# appends the input to the list
 @ask.intent("OriginCity")
 def originCity(Cities):
 	inputList.clear()
 	inputList.append(Cities)
 	return question("<speak> <s>Please say your starting state</s> </speak>")
 
+# handles user input for the state they are departing from
+# adds input to the list
 @ask.intent("OriginState")
 def originState(States):
+	# dictionary mapping state names to abbreviation 
+	# for use when parsing GasBuddy.com
 	us_state_abbrev = {
     'Alabama': 'AL',
     'Alaska': 'AK',
@@ -84,24 +90,24 @@ def originState(States):
 	inputList.append(us_state_abbrev[States])
 	return question("<speak> <s>Please say your ending city</s> </speak>")
 
+# handles user input for their destination
+# saves it to the list
 @ask.intent("DestinationCity")
 def destinationCity(Cities):
 	inputList.append(Cities)
 	return question("<speak> <s>Lastly, please say the fuel efficiency of your car</s> </speak>")
 
+# handles user input for their vehicle's fuel efficiency
 @ask.intent("FuelEfficiency")
 def fuelEfficiency(mpg):
 	inputList.append(mpg)
 	return constructURL()
 
 
-# constructs URL
+# queries google maps api for travel time and distance
+# calls functions to parse the xml response and parse
+# the html for average state gas prices
 def constructURL():
-	#config = ConfigParser()
-	#config.read('config.ini')
-	#key = config.get('section1', 'API_KEY')
-	#print(key)
-
 	gmapsUrl = 'https://maps.googleapis.com/maps/api/distancematrix/xml?'
 	
 	originLocation = inputList[0]
@@ -112,10 +118,7 @@ def constructURL():
 	hours, miles = XML(url)
 	if hours is None or miles is None:
 		return statement("Invalid Location")
-	#r = requests.get(url)
 	
-	#print(r)
-	#print(url)
 	miles = int(round(miles))
 	gasAvg = gasParse()
 	mpg = float(inputList[3]) 
@@ -124,8 +127,9 @@ def constructURL():
 	return statement("<speak> <s>It will take {}".format(hours) + " to travel {}".format(miles) + " miles</s>" +
 		" <s>The total cost of gas for the trip is approximately {}".format(price) +" dollars</s> </speak>")
 
+# requests html from gasbuddy to fetch average state gas prices
 def gasParse():
-	# requests the url page
+	# requests the url page to find average gas prices per state
 	gasPage = requests.get("https://www.gasbuddy.com/USA")
 	
 	# turns the page content into a beautiful soup object
@@ -136,34 +140,33 @@ def gasParse():
 
 	# parses the html to find the information for that particular state
 	gasText = gasSoup.find(id=gasState)
-
-	# print(gasText)
 	
-	# Finds html tags with the listed class, which is the class that contains the average gas price
+	# Finds html tags with the listed class and attributes which finds listed gas price
 	table = gasText.find_all(class_='col-sm-2 col-xs-3 text-right')
-	
-	# print(table)
 
-	# Traverse thru the set created by table and prints the text within the tags, which is just the 
+	# Traverse through the set created by table and prints the text within the tags, which is just the 
 	# average gas price
 	for tag in table:
 		gas = float(tag.text.strip())
 	return gas
 
+# parses XML output from google maps api
 def XML(url):
-	# Use a request on the url. TODO: Find a way to change the url to use specific cities
+	# posts an http request to the google maps api formatted url
 	response = requests.get(url)
-	# Save the XML to an ET
-	tree = ET.fromstring(response.content)
-	# Navigate through the tree using indices
 	
+	# creates an element tree from the xml response
+	tree = ET.fromstring(response.content)
+	
+	# Navigate through the tree using indices
 	if tree[3][0][0].text == 'ZERO_RESULTS':
 		hours = None
 		miles = None
 	else:
 		hours = tree[3][0][1][1].text
 		miles = tree[3][0][2][1].text
-
+		
+		# converts miles to a float from a string and removes commas 
 		str1, str2 = miles.split()
 		if "," in str1:  
 			temp1, temp2 = str1.split(",")
@@ -173,8 +176,6 @@ def XML(url):
 		else:
 			miles = float(str1)
 
-		#print(str1)
-		#print(miles)
 	
 	return hours, miles
 
