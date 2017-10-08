@@ -15,7 +15,7 @@ def gasParse():
 	gasSoup = BeautifulSoup(gasPage.content, 'html.parser')
 
 	# stores user input for the state name
-	gasState = input("Enter Shortened State Name: ")
+	gasState = raw_input("Enter Shortened State Name: ")
 
 	# parses the html to find the information for that particular state
 	gasText = gasSoup.find(id=gasState)
@@ -30,7 +30,7 @@ def gasParse():
 	# Traverse thru the set created by table and prints the text within the tags, which is just the 
 	# average gas price
 	for tag in table:
-		gas = tag.text.strip()
+		gas = float(tag.text.strip())
 	return gas
 
 if __name__ == '__main__':
