@@ -19,13 +19,13 @@ def constructURL():
 
 	gmapsUrl = 'https://maps.googleapis.com/maps/api/distancematrix/xml?'
 	
-	originLocation = print('Enter name of Origin City: ' )
+	originLocation = print('Enter name of Origin City': )
 	destLocation = print('Enter name of Destination City:' )
 	
 	mydict = {'units' : 'imperial', 'origins' : originLocation, 'destinations' : destLocation}
 	url = gmapsUrl + urlencode(mydict)
 	hours, miles = parseXML.XML(url)
-	if hours or miles is None:
+	if hours is None or miles is None:
 		print("Unable to find a route.")
 		return
 	#r = requests.get(url)
