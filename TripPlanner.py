@@ -111,7 +111,7 @@ def constructURL():
 	url = gmapsUrl + urlencode(mydict)
 	hours, miles = XML(url)
 	if hours is None or miles is None:
-		return statement("Current list is {}".format(inputList))
+		return statement("Invalid Location")
 	#r = requests.get(url)
 	
 	#print(r)
