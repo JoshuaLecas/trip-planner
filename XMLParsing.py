@@ -8,12 +8,16 @@ def XML(url):
 	# Save the XML to an ET
 	tree = ET.fromstring(response.content)
 	# Navigate through the tree using indices
-	hours = tree[3][0][1][1].text
+	
+	if tree[3][0][0].text == 'ZERO_RESULTS':
+		hours = None
+		miles = None
+	else:
+		hours = tree[3][0][1][1].text
+		miles = tree[3][0][2][1].text
 
-	miles = tree[3][0][2][1].text
+		num = re.findall('\d+\.\d+', miles)
+		miles = float(num[0])
+		print(miles)
 
-	num = re.findall('\d+\.\d+', miles)
-	miles = float(num[0])
-	print(miles)
-
-	return hours, miles
+		return hours, miles
