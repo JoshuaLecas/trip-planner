@@ -18,10 +18,12 @@ inputList = []
 
 @ask.launch
 def launch():
-	return question("Welcome to US Road Trip Planner. Please say your starting city")
+	inputList.clear()
+	return question("<s> Welcome to US Road Trip Planner. </s> Please say your starting city")
 
 @ask.intent("OriginCity")
 def originCity(Cities):
+	inputList.clear()
 	inputList.append(Cities)
 	return question("Please say your starting state")
 
@@ -109,7 +111,7 @@ def constructURL():
 	url = gmapsUrl + urlencode(mydict)
 	hours, miles = XML(url)
 	if hours is None or miles is None:
-		return statement("Invalid location input")
+		return statement("Current list is {}".format(inputList))
 	#r = requests.get(url)
 	
 	#print(r)
@@ -118,6 +120,7 @@ def constructURL():
 	gasAvg = gasParse()
 	mpg = float(inputList[3]) 
 	price = int(round(gasAvg * miles * (1.0/float(mpg))))
+	inputList.clear()
 	return statement("It will take {}".format(hours) + " to travel {}".format(miles) + " miles" +
 		" The total cost of gas for the trip is approximately {}".format(price) +" dollars")
 
