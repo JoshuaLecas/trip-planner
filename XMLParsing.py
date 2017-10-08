@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET 
 import requests
+import re
 
 def XML(url):
 	# Use a request on the url. TODO: Find a way to change the url to use specific cities
@@ -10,5 +11,8 @@ def XML(url):
 	hours = tree[3][0][1][1].text
 
 	miles = tree[3][0][2][1].text
+
+	num = re.findall('\d+\.\d+', miles)
+	print(float(num[0]))
 
 	return hours, miles
