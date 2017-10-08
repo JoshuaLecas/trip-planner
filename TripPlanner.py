@@ -34,8 +34,8 @@ def constructURL():
 	#print(url)
 	print hours, miles
 	gasAvg = fectchinGas.gasParse()
-	#print(gasAvg) 
-	price = gasAvg * miles
+	mpg = raw_input('What is the gas mileage of your car?: ')  
+	price = gasAvg * miles * (1.0/float(mpg))
 	print "%.2f" % price
 
 if __name__ == '__main__':
