@@ -19,13 +19,13 @@ inputList = []
 @ask.launch
 def launch():
 	inputList.clear()
-	return question("<s> Welcome to US Road Trip Planner. </s> Please say your starting city")
+	return question("<speak> <s> Welcome to US Road Trip Planner.</s> <s>Please say your starting city</s> </speak>")
 
 @ask.intent("OriginCity")
 def originCity(Cities):
 	inputList.clear()
 	inputList.append(Cities)
-	return question("Please say your starting state")
+	return question("<speak> <s>Please say your starting state</s> </speak>")
 
 @ask.intent("OriginState")
 def originState(States):
@@ -82,12 +82,12 @@ def originState(States):
     'Wyoming': 'WY',
 	}
 	inputList.append(us_state_abbrev[States])
-	return question("Please say your ending city")
+	return question("<speak> <s>Please say your ending city</s> </speak>")
 
 @ask.intent("DestinationCity")
 def destinationCity(Cities):
 	inputList.append(Cities)
-	return question("Lastly, please say the fuel efficiency of your car")
+	return question("<speak> <s>Lastly, please say the fuel efficiency of your car</s> </speak>")
 
 @ask.intent("FuelEfficiency")
 def fuelEfficiency(mpg):
@@ -121,8 +121,8 @@ def constructURL():
 	mpg = float(inputList[3]) 
 	price = int(round(gasAvg * miles * (1.0/float(mpg))))
 	inputList.clear()
-	return statement("It will take {}".format(hours) + " to travel {}".format(miles) + " miles" +
-		" The total cost of gas for the trip is approximately {}".format(price) +" dollars")
+	return statement("<speak> <s>It will take {}".format(hours) + " to travel {}".format(miles) + " miles</s>" +
+		" <s>The total cost of gas for the trip is approximately {}".format(price) +" dollars</s> </speak>")
 
 def gasParse():
 	# requests the url page
